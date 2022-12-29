@@ -1,9 +1,40 @@
 import React from "react";
-import { Text,StyleSheet } from "react-native";
+import { Text,StyleSheet, View, TouchableOpacity } from "react-native";
+import * as Style from '../assets/styles';
+import { ApplicationProvider, IconRegistry, Layout, Icon } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
 
 const Notes = () => {
     return(
-        <Text>Hello</Text>
+        //<Text>Hello</Text>
+        <View style={[styles.notesContainer]}>
+            
+
+            <View style={styles.headingContainer}>
+            
+                <Text style={styles.heading}> Your Notes..</Text>
+                
+                <View style={{flexDirection: 'row'}}>
+                
+                    <TouchableOpacity style={[styles.button,{marginLeft: 40}]}>
+                    <IconRegistry icons={EvaIconsPack}/>
+                    <ApplicationProvider {...eva} theme={eva.light}>
+                        <Icon name='trash-2-outline' fill="white" style={{width:25, height:50}}/>
+                    </ApplicationProvider>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.button,{marginLeft: 40}]}>
+                    <IconRegistry icons={EvaIconsPack}/>
+                    <ApplicationProvider {...eva} theme={eva.light}>
+                        <Icon name='plus-outline' fill="white" style={{width:25, height:50}}/>
+                    </ApplicationProvider>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+        </View>
     )
 }
 
@@ -17,12 +48,12 @@ export const styles = StyleSheet.create({
     heading:{
         fontSize:30,
         fontWeight:'700',
-        color:StyleSheet.color,
+        color:Style.color,
     },
     divider:{
         width:'100%',
         height:2,
-        backgroundColor: StyleSheet.color,
+        backgroundColor: Style.color,
         marginTop:5,
         marginBottom:5
     },
@@ -32,12 +63,12 @@ export const styles = StyleSheet.create({
         color:'black',
         opacity:0.8,
         marginTop: 10,
-        shadowColor: StyleSheet.color,
+        shadowColor: Style.color,
         shadowOpacity:0.5,
         shadowOffset:{width: 0,height: 4},
         shadowRadius: 8,
         elevation: 5,
-        backgroundColor: StyleSheet.color,
+        backgroundColor: Style.color,
         borderWidth: 2,
         borderRadius: 5,
         borderLeftWidth: 15,
@@ -52,7 +83,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     button: {
-        backgroundColor: StyleSheet.color,
+        backgroundColor: Style.color,
         width: 50,
         borderRadius:100,
         justifyContent: 'center',
@@ -78,7 +109,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     delete: {
-        color: StyleSheet.color,
+        color: Style.color,
         fontWeight: '700',
         fontSize: 15
     },
@@ -90,12 +121,12 @@ export const styles = StyleSheet.create({
         color: 'black',
         fontWeight: '600',
         opacity: 0.8,
-        shadowColor: StyleSheet.color,
+        shadowColor: Style.color,
         shadowOpacity: 0.4,
         shadowOffset: {width:0,height:4},
         shadowRadius: 9,
         elevation:5,
-        backgroundColor: StyleSheet.color,
+        backgroundColor: Style.color,
         borderWidth: 2,
         borderRadius: 5,
     },
