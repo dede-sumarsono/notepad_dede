@@ -1,14 +1,13 @@
 import React from "react";
-import { Text,StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text,StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
 import * as Style from '../assets/styles';
 import { ApplicationProvider, IconRegistry, Layout, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 
-const Notes = () => {
+const Notes = ({navigation}) => {
     return(
-        //<Text>Hello</Text>
         <View style={[styles.notesContainer]}>
             
 
@@ -18,14 +17,14 @@ const Notes = () => {
                 
                 <View style={{flexDirection: 'row'}}>
                 
-                    <TouchableOpacity style={[styles.button,{marginLeft: 40}]}>
+                    <TouchableOpacity style={[styles.button,{marginLeft: 40}]} onPress={() => navigation.navigate('DeletedNotes')}>
                     <IconRegistry icons={EvaIconsPack}/>
                     <ApplicationProvider {...eva} theme={eva.light}>
                         <Icon name='trash-2-outline' fill="white" style={{width:25, height:50}}/>
                     </ApplicationProvider>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.button,{marginLeft: 40}]}>
+                    <TouchableOpacity style={[styles.button]} onPress={() => navigation.navigate('AddNote')}>
                     <IconRegistry icons={EvaIconsPack}/>
                     <ApplicationProvider {...eva} theme={eva.light}>
                         <Icon name='plus-outline' fill="white" style={{width:25, height:50}}/>
@@ -34,6 +33,35 @@ const Notes = () => {
 
                 </View>
             </View>
+
+            <View style={{flexDirection:'row', alignItems: 'center'}}>
+
+                <Text style={{fontWeight:'700',fontSize: 18, color: Style.color}}>
+                    Total: 
+                </Text>
+
+            </View>
+
+            <View style={styles.divider}>
+
+            </View>
+
+            <View style={styles.searchContainer}>
+                <TextInput placeholder='Search...' placeholderTextColor={Style.color} style={[styles.input,{borderWidth: 3}]}/>
+
+                <TouchableOpacity style={[styles.searchButton, {width:50}]}>
+                    <IconRegistry icons={EvaIconsPack}/>
+                        <ApplicationProvider {...eva} theme={eva.light}>
+                            <Icon name='search' fill="white" style={{width:22, height:40}}/>
+                        </ApplicationProvider>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.searchButton}>
+                    <Text style={styles.searchButtonText}>Clear</Text>
+                </TouchableOpacity>
+            
+            </View>
+
         </View>
     )
 }
@@ -126,7 +154,8 @@ export const styles = StyleSheet.create({
         shadowOffset: {width:0,height:4},
         shadowRadius: 9,
         elevation:5,
-        backgroundColor: Style.color,
+        backgroundColor: 'white',
+        borderColor: Style.color,
         borderWidth: 2,
         borderRadius: 5,
     },
