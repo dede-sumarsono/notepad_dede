@@ -1,12 +1,13 @@
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
 import React from "react";
 import { TextInput, TouchableOpacity } from "react-native";
+import { Alert } from "react-native";
 import { KeyboardAvoidingView, Keyboard, View } from "react-native";
 import { ScrollView } from "react-native";
 import { Text, StyleSheet } from "react-native";
 import * as Style from '../assets/styles';
 
-const AddNote = () => {
+const AddNote = ({navigation, ...props}) => {
     return(
         
         <ScrollView >
@@ -18,9 +19,17 @@ const AddNote = () => {
                     <View style={{padding: 20, justifyContent: 'space-around'}}>
 
                         <TextInput style={[styles.input]} placeholder='Type Here...'
-                        multiline={true}/>
+                        multiline={true}
+                        value= {props.note} onChangeText={(text) => props.setNote(text)}/>
 
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={() => {
+                            if(props.note === ''){
+                                Alert.alert('Please Type something');
+                            }else{
+                                props.handleNote();
+                                navigation.navigate('Note')
+                            }
+                        }}>
                             <Text style={styles.buttonText}>Add</Text>
                         </TouchableOpacity>
 

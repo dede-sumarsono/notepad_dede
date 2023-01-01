@@ -12,16 +12,25 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   const [note, setNote] = useState();
-  const [notes, setNotes] = useState();
+  const [notes, setNotes] = useState([]);
+
+  function handleNote(){
+    let newNote = note;
+    let newNotes = [newNote, ...notes];
+    setNotes(newNotes);
+    setNote('');
+
+  }
+
   return (
     <NavigationContainer >
       <Stack.Navigator>
         <Stack.Screen name='Note'>
-          {props => <Notes {...props} />}
+          {props => <Notes {...props} notes = {notes} setNotes={setNotes} note={note} setNote={setNote}/>}
         </Stack.Screen>
 
         <Stack.Screen name="AddNote">
-          {props => <AddNote {...props} />}
+          {props => <AddNote {...props} note={note} setNote={setNote} handleNote={handleNote}/>}
         </Stack.Screen>
 
         <Stack.Screen name="DeletedNotes">

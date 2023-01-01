@@ -1,12 +1,13 @@
 import React from "react";
-import { Text,StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
+import { Text,StyleSheet, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import * as Style from '../assets/styles';
 import { ApplicationProvider, IconRegistry, Layout, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { PropsService } from "@ui-kitten/components/devsupport";
 
 
-const Notes = ({navigation}) => {
+const Notes = ({navigation, ...props}) => {
     return(
         <View style={[styles.notesContainer]}>
             
@@ -62,6 +63,46 @@ const Notes = ({navigation}) => {
             
             </View>
 
+            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+                {props.notes.length === 0 
+                ?
+                
+                <View style={styles.emptyNoteContainer}>
+                    <Text style={styles.emptyNoteText}>There is no note yet ! Click icon "+"" button to add new note...</Text>
+                </View>
+                :
+                props.notes.map((item, index) => 
+                    
+                    <View style={styles.item} key={index}>
+                        <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+                        
+                        <View style={styles.note}>
+                            <Text style={styles.index}>{index + 1}. </Text>
+                            <Text style={styles.text}>{item}</Text>
+                        </View>
+
+                        <TouchableOpacity>
+
+                            <Text style={styles.delete}>X</Text>
+
+                        </TouchableOpacity>
+
+                    </View>
+
+                    <View style = {styles.dateContainer}>
+                        <Text>Date:</Text>
+
+                        <TouchableOpacity>
+                            <Text style={styles.delete}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    
+                    </View>
+                )
+                }
+            </ScrollView>
+
         </View>
     )
 }
@@ -88,7 +129,7 @@ export const styles = StyleSheet.create({
     item:{
         marginBottom: 20,
         padding:15,
-        color:'black',
+        color: 'black',
         opacity:0.8,
         marginTop: 10,
         shadowColor: Style.color,
@@ -96,7 +137,8 @@ export const styles = StyleSheet.create({
         shadowOffset:{width: 0,height: 4},
         shadowRadius: 8,
         elevation: 5,
-        backgroundColor: Style.color,
+        backgroundColor: 'white',
+        borderColor: Style.color,
         borderWidth: 2,
         borderRadius: 5,
         borderLeftWidth: 15,
