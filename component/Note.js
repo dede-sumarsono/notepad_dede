@@ -8,6 +8,17 @@ import { PropsService } from "@ui-kitten/components/devsupport";
 
 
 const Notes = ({navigation, ...props}) => {
+
+    function deleteNote(index){
+        let newArray = [...props.notes];
+        let movedNote = newArray.splice(index, 1);
+        props.setNotes(newArray);
+        props.setMoveToBin(movedNote);
+
+        let bin = [movedNote, ...props.moveToBin];
+        props.setMoveToBin(bin);
+
+    }
     return(
         <View style={[styles.notesContainer]}>
             
@@ -81,7 +92,7 @@ const Notes = ({navigation, ...props}) => {
                             <Text style={styles.text}>{item}</Text>
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => deleteNote(index)}>
 
                             <Text style={styles.delete}>X</Text>
 
@@ -90,17 +101,20 @@ const Notes = ({navigation, ...props}) => {
                     </View>
 
                     <View style = {styles.dateContainer}>
-                        <Text>Date:</Text>
+                        <Text>{props.date}</Text>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('EditNote', {
+                            i: index,
+                            n: item
+                        })}>
                             <Text style={styles.delete}>Edit</Text>
                         </TouchableOpacity>
                     </View>
 
                     
                     </View>
-                )
-                }
+                
+                )}
             </ScrollView>
 
         </View>

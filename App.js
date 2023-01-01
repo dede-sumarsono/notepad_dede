@@ -6,6 +6,7 @@ import Notes from './component/Note';
 import AddNote from './component/AddNote';
 import DeletedNotes from './component/DeletedNotes';
 import React, {useState} from 'react';
+import EditNote from './component/EditNote';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,8 @@ export default function App() {
 
   const [note, setNote] = useState();
   const [notes, setNotes] = useState([]);
+  const [date, setDate] = useState(new Date().toUTCString());
+  const [moveToBin, setMoveToBin] = useState([]);
 
   function handleNote(){
     let newNote = note;
@@ -26,7 +29,7 @@ export default function App() {
     <NavigationContainer >
       <Stack.Navigator>
         <Stack.Screen name='Note'>
-          {props => <Notes {...props} notes = {notes} setNotes={setNotes} note={note} setNote={setNote}/>}
+          {props => <Notes {...props} notes = {notes} moveToBin={moveToBin} setMoveToBin={setMoveToBin} setNotes={setNotes} note={note} setNote={setNote} date={date} setDate={setDate}/>}
         </Stack.Screen>
 
         <Stack.Screen name="AddNote">
@@ -34,7 +37,11 @@ export default function App() {
         </Stack.Screen>
 
         <Stack.Screen name="DeletedNotes">
-          {props => <DeletedNotes {...props}/>}
+          {props => <DeletedNotes {...props} moveToBin={moveToBin} setMoveToBin={setMoveToBin} notes={notes} setNotes={setNotes} date={date}/>}
+        </Stack.Screen>
+
+        <Stack.Screen name = "EditNote">
+          {props => <EditNote {...props} notes={notes} setNotes={setNotes}/>}
         </Stack.Screen>
 
       </Stack.Navigator>
