@@ -18,19 +18,19 @@ const AddNote = ({navigation, ...props}) => {
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={{padding: 20, justifyContent: 'space-around'}}>
 
-                        <TextInput style={[styles.input]} placeholder='Type Here...'
+                        <TextInput style={[styles.input]} placeholder='Ketik di sini .. '
                         multiline={true}
                         value= {props.note} onChangeText={(text) => props.setNote(text)}/>
 
                         <TouchableOpacity style={styles.button} onPress={() => {
                             if(props.note === ''){
-                                Alert.alert('Please Type something');
+                                Alert.alert('Tolong ketikan sesuatu');
                             }else{
                                 props.handleNote();
                                 navigation.navigate('Note')
                             }
                         }}>
-                            <Text style={styles.buttonText}>Add</Text>
+                            <Text style={styles.buttonText}>Tambahkan</Text>
                         </TouchableOpacity>
 
                     </View>

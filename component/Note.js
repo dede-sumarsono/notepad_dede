@@ -75,7 +75,7 @@ const Notes = ({navigation, ...props}) => {
 
             <View style={styles.headingContainer}>
             
-                <Text style={styles.heading}> Your Notes..</Text>
+                <Text style={styles.heading}>Catatan..</Text>
                 
                 <View style={{flexDirection: 'row'}}>
                 
@@ -109,7 +109,7 @@ const Notes = ({navigation, ...props}) => {
             </View>
 
             <View style={styles.searchContainer}>
-                <TextInput placeholder='Search...' placeholderTextColor={Style.color} style={[styles.input,{borderWidth: 3}]}
+                <TextInput placeholder='Cari..' placeholderTextColor={Style.color} style={[styles.input,{borderWidth: 3}]}
                 value={searchNote} onChangeText={(text) => setSearchNote(text)}
                 />
 
@@ -121,7 +121,7 @@ const Notes = ({navigation, ...props}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.searchButton} onPress={() => clearAllNotes()}>
-                    <Text style={styles.searchButtonText}>Clear</Text>
+                    <Text style={styles.searchButtonText}>Hapus</Text>
                 </TouchableOpacity>
             
             </View>
@@ -131,7 +131,7 @@ const Notes = ({navigation, ...props}) => {
                 ?
                 
                 <View style={styles.emptyNoteContainer}>
-                    <Text style={styles.emptyNoteText}>There is no note yet ! Click icon "+"" button to add new note...</Text>
+                    <Text style={styles.emptyNoteText}>Belum ada catatan apapun ! Klik ikon "pena" untuk menambahkan catatan baru...</Text>
                 </View>
                 :
                 props.notes.map((item, index) => 

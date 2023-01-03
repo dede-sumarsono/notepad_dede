@@ -11,15 +11,15 @@ const DeletedNotes = ({...props}) => {
 
     function emptyBin(){
         Alert.alert(
-            'Delete All',
-            'Are you sure you want to permanently delete all notes?',
+            'Hapus semua',
+            'Apakah anda yakin ingin menghapus semuanya catatan secara permanen? ',
             [{
-                text: 'No',
-                onPress: () => console.log('No pressed'),
+                text: 'Tidak',
+                onPress: () => console.log('Tidak ada yang ditekan'),
                 style:'cancel'
             },
             {
-                text:'Yes',
+                text:'Ya',
                 onPress:() => {
                     let emptyArray = [...props.moveToBin];
                     emptyArray =[];
@@ -66,23 +66,25 @@ const DeletedNotes = ({...props}) => {
             props.setNotes(array)
         }).catch(error => console.log(error))
 
-        AsyncStorage.setItem('deletedNotes',() => {
-            return;
-        })
+    
+
+        AsyncStorage.setItem('deletedNotes',JSON.stringify(newArray)).then(()=> {
+            props.setMoveToBin(newArray)
+        }).catch(error => console.log(error))
     }
 
     function permanentlyDelete(index){
         Alert.alert(
-            'Delete',
-            'Are you sure you want to permanently delete this item?',
+            'Hapus',
+            'Apakah kamu yakin ingin menghapus catatan ini secara permanen?',
             [
                 {
-                    text: 'No',
-                    onPress: () => console.log('No pressed'),
+                    text: 'Tidak',
+                    onPress: () => console.log('Tidak ada yang ditekan'),
                     style: 'cancel',
                 },
                 {
-                    text: 'Yes',
+                    text: 'Ya',
                     onPress: () => {
                         let newArray = [...props.moveToBin];
                         newArray.splice(index,1);
@@ -113,7 +115,7 @@ const DeletedNotes = ({...props}) => {
                     </Text>
 
                     <TouchableOpacity style={style.emptyButton} onPress={() => emptyBin()}>
-                        <Text style={style.emptyButtonText}>Empty</Text>
+                        <Text style={style.emptyButtonText}>Hapuskan</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -123,7 +125,7 @@ const DeletedNotes = ({...props}) => {
                 {props.moveToBin.length === 0 
                 ?
                 <View style={styles.emptyNoteContainer}>
-                    <Text style={styles.emptyNoteText}>Nothing to show yet...!</Text>
+                    <Text style={styles.emptyNoteText}>Tidak ada yang ditampilkan...!</Text>
 
                 </View>
             :
@@ -145,7 +147,7 @@ const DeletedNotes = ({...props}) => {
                         <Text>{props.date}</Text>    
 
                         <TouchableOpacity onPress={() => permanentlyDelete(index)}>
-                            <Text style={styles.delete}>Delete</Text>
+                            <Text style={styles.delete}>Hapus</Text>
                         </TouchableOpacity>
                     </View>    
                 </View>
