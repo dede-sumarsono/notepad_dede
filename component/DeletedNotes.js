@@ -5,6 +5,7 @@ import * as Style from '../assets/styles';
 import { Text } from "react-native";
 import {styles} from './Note';
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeletedNotes = ({...props}) => {
 
@@ -23,6 +24,10 @@ const DeletedNotes = ({...props}) => {
                     let emptyArray = [...props.moveToBin];
                     emptyArray =[];
                     props.setMoveToBin(emptyArray);
+
+                    AsyncStorage.setItem('deletedNotes',JSON.stringify(emptyArray)).then(()=> {
+                        props.setMoveToBin(emptyArray)
+                    }).catch(error => console.log(error))
                 }
             }
         
@@ -38,6 +43,14 @@ const DeletedNotes = ({...props}) => {
         })
         props.setMoveToBin([]);
         props.setNotes(deletedNotes);
+
+        AsyncStorage.setItem('storedNotes',JSON.stringify(notes)).then(()=> {
+            props.setNotes(notes)
+        }).catch(error => console.log(error))
+
+        AsyncStorage.setItem('deletedNotes',JSON.stringify([])).then(()=> {
+            props.setMoveToBin([])
+        }).catch(error => console.log(error))
     }
 
     function undoNote(index){
@@ -48,6 +61,14 @@ const DeletedNotes = ({...props}) => {
         let newArray = [...props.moveToBin];
         newArray.splice(index, 1);
         props.setMoveToBin(newArray);
+
+        AsyncStorage.setItem('storedNotes',JSON.stringify(array)).then(()=> {
+            props.setNotes(array)
+        }).catch(error => console.log(error))
+
+        AsyncStorage.setItem('deletedNotes',() => {
+            return;
+        })
     }
 
     function permanentlyDelete(index){
@@ -66,6 +87,10 @@ const DeletedNotes = ({...props}) => {
                         let newArray = [...props.moveToBin];
                         newArray.splice(index,1);
                         props.setMoveToBin(newArray);
+
+                        AsyncStorage.setItem('deletedNotes',JSON.stringify(newArray)).then(()=> {
+                            props.setMoveToBin(newArray)
+                        }).catch(error => console.log(error))
                     }
                 }
             ]

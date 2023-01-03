@@ -7,7 +7,7 @@ import { TouchableNativeFeedback } from "react-native";
 import { KeyboardAvoidingView, Keyboard, View } from "react-native";
 import {ScrollView ,Text} from 'react-native';
 import {styles} from './AddNote';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditNote =({route, navigation, ...props}) => {
     const {i,n} = route.params;
@@ -19,13 +19,17 @@ const EditNote =({route, navigation, ...props}) => {
         props.setNotes(edited);
 
         navigation.navigate('Note');
+
+        AsyncStorage.setItem('storedNotes', JSON.stringify(edited)).then(()=> {
+            props.setNotes(edited)
+        }).catch(error => console.log(error))
     }
 
     return (
         <ScrollView>
             <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            behavior='padding'>
+            >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
                     <View style={{padding: 20, justifyContent: 'space-around'}}>

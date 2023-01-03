@@ -1,13 +1,17 @@
-import React from "react";
-import { Text,StyleSheet, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import React, {useState} from "react";
+import { Text,StyleSheet, View, TouchableOpacity, TextInput, ScrollView, Alert, Keyboard } from "react-native";
 import * as Style from '../assets/styles';
 import { ApplicationProvider, IconRegistry, Layout, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { PropsService } from "@ui-kitten/components/devsupport";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Notes = ({navigation, ...props}) => {
+
+    const [searchNote, setSearchNote] = useState();
+
 
     function deleteNote(index){
         let newArray = [...props.notes];
@@ -18,6 +22,52 @@ const Notes = ({navigation, ...props}) => {
         let bin = [movedNote, ...props.moveToBin];
         props.setMoveToBin(bin);
 
+        AsyncStorage.setItem('storedNotes', JSON.stringify(newArray)).then(()=> {
+            props.setNotes(newArray)
+        }).catch(error => console.log(error))
+
+        AsyncStorage.setItem('deletedNotes', JSON.stringify(bin)).then(()=> {
+            props.setMoveToBin(bin)
+        }).catch(error => console.log(error))
+
+    }
+
+    function search(){
+        if (searchNote === '') {
+            Alert.alert('Type something in search box')
+        }else if (searchNote !== ''){
+            props.notes.forEach((item, index) => {
+                if (item.includes(searchNote)) {
+                    let searchItem = [...props.notes];
+                    let firstElOfArray = searchItem[0];
+                    let index = [...props.notes].indexOf(item);
+                    searchItem[0] = item;
+                    searchItem[index] = firstElOfArray;
+                    props.setNotes(searchItem);                   
+                }
+            })
+        }
+        setSearchNote('');
+        Keyboard.dismiss();
+    }
+
+    function clearAllNotes(){
+        let emptyArray = [...props.notes];
+        let deletedCompArray = [...props.moveToBin];
+        emptyArray.forEach((item,index) => {
+            deletedCompArray.push(item);
+        })
+        emptyArray = [];
+        props.setNotes(emptyArray);
+        props.setMoveToBin(deletedCompArray);
+
+        AsyncStorage.setItem('storedNotes', JSON.stringify(emptyArray)).then(()=> {
+            props.setNotes(emptyArray)
+        }).catch(error => console.log(error))
+
+        AsyncStorage.setItem('deletedNotes', JSON.stringify(deletedCompArray)).then(()=> {
+            props.setMoveToBin(deletedCompArray)
+        }).catch(error => console.log(error))
     }
     return(
         <View style={[styles.notesContainer]}>
@@ -39,7 +89,7 @@ const Notes = ({navigation, ...props}) => {
                     <TouchableOpacity style={[styles.button]} onPress={() => navigation.navigate('AddNote')}>
                     <IconRegistry icons={EvaIconsPack}/>
                     <ApplicationProvider {...eva} theme={eva.light}>
-                        <Icon name='plus-outline' fill="white" style={{width:25, height:50}}/>
+                        <Icon name='edit-outline' fill="white" style={{width:25, height:50}}/>
                     </ApplicationProvider>
                     </TouchableOpacity>
 
@@ -49,7 +99,7 @@ const Notes = ({navigation, ...props}) => {
             <View style={{flexDirection:'row', alignItems: 'center'}}>
 
                 <Text style={{fontWeight:'700',fontSize: 18, color: Style.color}}>
-                    Total: 
+                    Total: {props.notes.length}
                 </Text>
 
             </View>
@@ -59,16 +109,18 @@ const Notes = ({navigation, ...props}) => {
             </View>
 
             <View style={styles.searchContainer}>
-                <TextInput placeholder='Search...' placeholderTextColor={Style.color} style={[styles.input,{borderWidth: 3}]}/>
+                <TextInput placeholder='Search...' placeholderTextColor={Style.color} style={[styles.input,{borderWidth: 3}]}
+                value={searchNote} onChangeText={(text) => setSearchNote(text)}
+                />
 
-                <TouchableOpacity style={[styles.searchButton, {width:50}]}>
+                <TouchableOpacity style={[styles.searchButton, {width:50}]} onPress={() => search()}>
                     <IconRegistry icons={EvaIconsPack}/>
                         <ApplicationProvider {...eva} theme={eva.light}>
                             <Icon name='search' fill="white" style={{width:22, height:40}}/>
                         </ApplicationProvider>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.searchButton}>
+                <TouchableOpacity style={styles.searchButton} onPress={() => clearAllNotes()}>
                     <Text style={styles.searchButtonText}>Clear</Text>
                 </TouchableOpacity>
             

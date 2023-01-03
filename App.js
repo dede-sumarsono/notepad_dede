@@ -5,8 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Notes from './component/Note';
 import AddNote from './component/AddNote';
 import DeletedNotes from './component/DeletedNotes';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import EditNote from './component/EditNote';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,33 @@ export default function App() {
     setNotes(newNotes);
     setNote('');
 
+    AsyncStorage.setItem('storedNotes', JSON.stringify(newNotes)).then(() => {
+      setNotes(newNotes)
+    }).catch(error => console.log(error))
+
+    AsyncStorage.setItem('date', JSON.stringify(date)).then(() => {
+      setDate(date);
+    })
+  }
+
+  useEffect(() => {
+    loadNotes();
+  }, []);
+
+  const loadNotes = () => {
+    AsyncStorage.getItem('storedNotes').then(data => {
+      if (data !== null) {
+        setNotes(JSON.parse(date));
+      }
+    }).catch((error) => console.log(error))
+
+    AsyncStorage.getItem('deletedNotes').then(data => {
+      if (data !== null) {
+        setMoveToBin(JSON.parse(date));
+      }
+    }).catch((error) => console.log(error))
+
+    AsyncStorage.getItem('date');
   }
 
   return (
